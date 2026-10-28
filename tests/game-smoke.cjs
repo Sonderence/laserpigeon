@@ -1,0 +1,17 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),noop=()=>{},nodes=new Map(),g=new Proxy({},{get:()=>noop,set:()=>true});
+const node=s=>{if(!nodes.has(s))nodes.set(s,{textContent:'',classList:{add:noop,remove:noop,toggle:noop},setAttribute:noop,focus:noop,getContext:()=>g});return nodes.get(s)};
+const sandbox={document:{querySelector:node,querySelectorAll:()=>[],addEventListener:noop},window:{addEventListener:noop},localStorage:{getItem:()=>null,setItem:noop},requestAnimationFrame:noop,setInterval:noop,Image:function(){},console};vm.createContext(sandbox);for(const f of ['overrides','art','levels','game'])vm.runInContext(fs.readFileSync(__dirname+'/../dist/'+f+'.js','utf8'),sandbox);const run=s=>vm.runInContext(s,sandbox);
+run('select(0);start();var duck=skyEnemy("duck");for(let i=0;i<4;i++)hitEnemy(duck,{life:1})');assert.equal(run('duck.hp'),1);assert(!run('duck.dead'));assert.equal(run('score'),0);run('hitEnemy(duck,{life:1})');assert(run('duck.dead'));assert.equal(run('score'),400);
+assert(run('skyDifficulty(60).d<1'));assert(run('skyDifficulty(90).d===1'));assert(run('skyDifficulty(600).d>skyDifficulty(90).d'));assert(run('skyDifficulty(1e9).enemyInterval>=.9'));
+run('select(0);start();invul=99999;var seen={},maxEnemies=0;for(let i=0;i<30000;i++){update(.04);for(const e of enemies)if(seen[e.type]===undefined)seen[e.type]=time;maxEnemies=Math.max(maxEnemies,enemies.length);if(state!=="playing")throw Error("Run ended at "+time)}');assert.equal(run('state'),'playing');assert(run('time>1199'));assert(run('maxEnemies<100'));assert.equal(run('score'),0);
+for(const [type,t] of [['cat',9],['kid',21],['highCat',30],['plane',27],['duck',36],['overpass',45],['falcon',54]]){assert(run(`seen.${type}>=${t}-.05`));assert(run(`seen.${type}<${t}+5`))}
+assert(!node('#status').textContent.includes('SURVIVE'));assert(node('#status').textContent.includes('FLIGHT'));run('lives=1;invul=0;enemies=[{type:"paint",x:player.x,y:player.y,vx:0,vy:0,t:0,hp:1,w:6,h:6}];update(.01)');assert.equal(run('state'),'over');run('start()');assert.equal(run('time'),0);assert.equal(run('lives'),3);
+run('select(1);start();climb=1000;spawn=999;update(.01)');assert.equal(run('state'),'won');run('select(2);start();levelTime=LEVELS[levelIndex].limit;update(.01)');assert.equal(run('state'),'over');
+run('select(1)');assert(node('#overline').textContent.includes('WORK IN PROGRESS'));assert(node('#modeLabel').textContent.includes('WIP'));
+run('select(2)');assert(node('#overline').textContent.includes('WORK IN PROGRESS'));assert(node('#modeLabel').textContent.includes('WIP'));
+run('select(0)');assert(!node('#overline').textContent.includes('WORK IN PROGRESS'));
+const path=require('node:path'),root=path.join(__dirname,'..'),page=fs.readFileSync(path.join(root,'dist/index.html'),'utf8');
+assert.equal((page.match(/class="wip-label">WORK IN PROGRESS/g)||[]).length,2);
+const standalone=fs.readFileSync(path.join(root,'Laser Pigeon.html'),'utf8');assert(!/<script\s+src=/.test(standalone));assert(!/<link[^>]+rel="stylesheet"/.test(standalone));assert(!/@import/.test(standalone));
+for(const file of ['overrides','art','levels','game'])new vm.Script(fs.readFileSync(path.join(root,'dist',file+'.js'),'utf8'));
+console.log('PASS: 20-minute endless simulation, duck health/scoring, bounded progression, staged hazards, collision/retry, other-mode finish rules, WIP labels, and self-contained offline HTML packaging.');

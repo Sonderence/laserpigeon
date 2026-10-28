@@ -1,0 +1,12 @@
+{
+  "name": "laser-pigeon",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A grayscale browser arcade starring an endless laser-eyed pigeon. Peak Pigeon and Rooftop Ricochet are works in progress.",
+  "scripts": {
+    "start": "node scripts/serve.cjs",
+    "build": "node build-standalone.cjs",
+    "test": "node tests/game-smoke.cjs"
+  },
+  "engines": { "node": ">=18" }
+}
