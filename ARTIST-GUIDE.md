@@ -72,7 +72,7 @@ The background keys `skyBackground`, `peakBackground`, and `rooftopBackground` l
 
 | Enemy | Points | Laser hits |
 | --- | ---: | ---: |
-| Hawk / bird of prey | 100 | 2 |
+| Hawk | 100 | 2 |
 | Normal cat | 200 | 3 |
 | Striped high-jump cat | 300 | 4 |
 | Parachuting duck | 400 | 5 |
@@ -95,3 +95,4 @@ Rooftop shot budgets for levels 1–10 are 8, 11, 14, 12, 18, 18, 22, 24, 25, an
 `Laser Pigeon.html` is the self-contained playable edition. This source folder is the editable edition. `game.js` owns mechanics, `art.js` owns sprites, `overrides.js` owns image replacements, `levels.js` owns rooftop design, and `style.css` owns the page. Scores and per-level best stars are saved in the browser when local storage is available. Pigeon facts rotate at clock-hour boundaries, rechecking every 15 seconds and when the tab becomes visible; each fact links to its source.
 
 After editing, run `node build-standalone.cjs` from this folder to create a new standalone HTML. It embeds scripts, styles, and quoted `assets/*.png` paths in the override file. This packaging step needs Node.js; playing or editing the folder edition does not.
+

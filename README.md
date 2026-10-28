@@ -12,6 +12,12 @@ A tiny grayscale browser arcade starring a pigeon with a robot eye and questiona
 | Peak Pigeon | **Work in progress** | Fly up through an icy city to reach 1,000 m |
 | Rooftop Ricochet | **Work in progress** | Clear ten timed laser-bouncing challenges |
 
+## The arcade page
+
+The main page puts the game inside a pocket-console frame, with chunky grayscale pixel art, a flight clock, hearts, and your score visible around the screen. Start with Sky Patrol or use the three game cards to switch modes. Peak Pigeon and Rooftop Ricochet are clearly marked **Work in Progress**.
+
+The controls sit below the console, with on-screen movement and fire buttons on narrow touch screens. Sound effects are optional, personal bests stay in your browser, and **The Hourly Coo** beneath the game serves up a different pigeon fact each hour. Everything needed to play is bundled locally.
+
 ## Play locally in a minute
 
 You do **not** need hosting, an account, Node.js, or an installation to play.
@@ -57,7 +63,7 @@ Click inside the game if the keys are not responding. Leaving the window or hidi
 
 | Enemy | Points | Hits to defeat | What to watch for |
 | --- | ---: | ---: | --- |
-| Bird of prey | 100 | 2 | Hawks drift across the flight path |
+| Hawk | 100 | 2 | Drifts across the flight path |
 | Normal cat | 200 | 3 | Starts on the street and pounces upward |
 | Striped cat | 300 | 4 | Pounces higher than the normal cat |
 | Duck with sunglasses | 400 | 5 | A rare, slowly descending parachutist |
@@ -144,3 +150,4 @@ npm test
 ```
 
 These check game rules and a long simulated Sky Patrol run; they do not replace browser playtesting. When reporting a bug, include the game mode, browser, what you were doing, and whether you opened the HTML directly or used the local server.
+
